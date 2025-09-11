@@ -1,8 +1,12 @@
 package com.nggiabao2004.todo_website.dto.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class TodoUpdateRequest {
+    @Size(min = 3, message="Title-Todo khong duoc de trong!")
     private String title;
     private String description;
     private LocalDate deadline;
