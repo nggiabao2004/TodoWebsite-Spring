@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Finish project report",
+    "description": "Complete the final draft of the quarterly project report.",
+    "deadline": "2025-09-30",
+    "completed": false
+  },
+  {
+    "title": "Prepare presentation",
+    "description": "Slides for the client meeting on October 2nd.",
+    "deadline": "2025-09-28",
+    "completed": true
+  },
+  {
+    "title": "Team meeting",
+    "description": "Weekly sync with the development team.",
+    "deadline": "2025-09-15",
+    "completed": false
+  }
+]

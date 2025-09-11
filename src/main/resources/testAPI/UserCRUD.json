@@ -1,0 +1,37 @@
+[
+  {
+    "username": "alice_smith",
+    "password": "alice2024",
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "dob": "1985-07-22"
+  },
+  {
+    "username": "bob_jones",
+    "password": "bobsecure789",
+    "firstName": "Bob",
+    "lastName": "Jones",
+    "dob": "1992-03-11"
+  },
+  {
+    "username": "charlie_williams",
+    "password": "charlie1234",
+    "firstName": "Charlie",
+    "lastName": "Williams",
+    "dob": "2000-12-05"
+  },
+  {
+    "username": "diana_martinez",
+    "password": "diana@2023",
+    "firstName": "Diana",
+    "lastName": "Martinez",
+    "dob": "1980-09-30"
+  },
+  {
+    "username": "eric_brown",
+    "password": "ericSecure321",
+    "firstName": "Eric",
+    "lastName": "Brown",
+    "dob": "1995-02-18"
+  }
+]
