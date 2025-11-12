@@ -15,6 +15,8 @@ public class TodoService {
     private TodoRepository todoRepository;
 
     public Todo createTodo(TodoCreateRequest request){
+
+
         Todo newTodo = new Todo();
 
         newTodo.setTitle(request.getTitle());
