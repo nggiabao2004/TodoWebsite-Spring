@@ -5,6 +5,8 @@ import com.nggiabao2004.todo_website.dto.request.TodoUpdateRequest;
 import com.nggiabao2004.todo_website.entity.Todo;
 import com.nggiabao2004.todo_website.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,18 @@ import java.util.List;
 public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+
+    private Long getCurrentUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails){
+            String username = ((UserDetails) principal).getUsername();
+            return userDetailsService.getUserIdByUsername(username);
+        } else {
+            throw new RuntimeException("User not authenticated");
+        }
+    }
 
     public Todo createTodo(TodoCreateRequest request){
         Todo newTodo = new Todo();
@@ -21,12 +35,13 @@ public class TodoService {
         newTodo.setDescription(request.getDescription());
         newTodo.setDeadline(request.getDeadline());
         newTodo.setCompleted(request.isCompleted());
+        newTodo.setUserId(getCurrentUserId());
 
         return todoRepository.save(newTodo);
     }
 
     public List<Todo> getListTodo(){
-        return todoRepository.findAll();
+        return todoRepository.findByUserId(getCurrentUserId());
     }
 
     public Todo getTodoById(String id){
