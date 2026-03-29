@@ -62,3 +62,4 @@ Sau khi khởi động không báo lỗi, mở trình duyệt truy cập:
 
 ## 📜 Giấy phép
 Mã nguồn mở miễn phí học tập.
+Đã sử dụng Antigravity (Vibe Coding)
