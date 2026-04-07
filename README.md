@@ -1,65 +1,75 @@
-# Todo Website - Spring Boot & Vanilla UI 🚀
+# TodoWebsite Spring Boot API
 
-Một dự án quản lý công việc (Todo List) hiện đại được phát triển bằng **Spring Boot** (Java) kết hợp giao diện **Vanilla HTML/CSS/JS** sành điệu theo phong cách thiết kế **Glassmorphism** và nền Gradient mượt mà. Đồ án luyện tập giúp nắm bắt luồng Backend API và xác thực.
+Một hệ thống RESTful API mạnh mẽ được xây dựng bằng Spring Boot để quản lý danh sách công việc (Todo tasks). Dự án này cung cấp tính năng xác thực người dùng (kết hợp Session + JWT) và đảm bảo tính cách ly dữ liệu, nghĩa là mỗi người dùng chỉ có thể xem và quản lý danh sách công việc do chính họ tạo ra.
 
-## ✨ Tính Năng Nổi Bật
+## 🚀 Tính năng nổi bật
 
-- **Tài khoản cá nhân (Authentication)**: Đăng ký & Đăng nhập phân quyền theo mỗi cá nhân sử dụng Session Cookie bảo mật.
-- **RESTful API hoàn chỉnh**: Quản lý Create, Read, Update, Delete (CRUD).
-- **Phân tách Dữ liệu (Isolation)**: Dữ liệu (Todo) hoàn toàn riêng biệt giữa các User, bảo đảm an toàn trên 1 hệ thống Database.
-- **Single Page Application (SPA)**: Các thao tác được Javascript xử lý trên Frontend qua `fetch()`, không hề load lại trang (Seamless User Experience).
-- **Giao diện Premium**: Dark mode sành điệu, hiệu ứng thả bóng mờ, cùng Gradient Mesh đổi màu thú vị.
+* **Xác thực người dùng (User Authentication)**: Hệ thống Đăng ký và Đăng nhập an toàn sử dụng Spring Security và JSON Web Tokens (JWT).
+* **Bảo mật kép (Hybrid Security)**: Hỗ trợ linh hoạt cả hai phương thức xác thực: Bearer Token (JWT) và Cookie (Session).
+* **Quản lý công việc (Todo Management)**: Nhóm chức năng CRUD hoàn chỉnh (Tạo, Đọc, Cập nhật, Xóa) cho các tác vụ Todo.
+* **Cách ly dữ liệu (Data Isolation)**: Mối quan hệ Một-Nhiều (One-to-Many) chặt chẽ giữa User và Todo đảm bảo người dùng chỉ được phép can thiệp vào dữ liệu của riêng mình.
+* **Xử lý ngoại lệ tập trung (Centralized Exception Handling)**: Tích hợp sẵn Controller Advice giúp định dạng và trả về các thông báo lỗi (Lỗi Validation, 404 Không tìm thấy...) một cách chuẩn mực dưới định dạng JSON.
 
-## 🛠️ Nhóm Công Nghệ Sử Dụng
+## 🛠️ Công nghệ sử dụng
 
-### Backend
-- **Java 17+** (Dự án có thể chạy trên Java phiên bản mới)
-- **Spring Boot 3.x+**
-- **Spring Data JPA & Hibernate**
-- **Spring Security** (Session-based Auth & BCrypt)
-- **MySQL Database**
-- **Maven** dành cho quản lý dependency.
+* **Java** (v25)
+* **Spring Boot** (Starter Web, Data JPA, Security, Validation)
+* **Cơ sở dữ liệu MySQL**
+* **JSON Web Token (jjwt)**
+* **Lombok**
+* **Maven**
 
-### Frontend
-- **HTML5 & CSS3** (Vanilla CSS)
-- **Vanilla Javascript** (ES6+)
-- **Google Fonts** (Inter Typography)
-- **FontAwesome** (Icons)
+## ⚙️ Điều kiện tiên quyết
 
-## 🎯 Hướng Dẫn Cài Đặt và Khởi Chạy
+* Đã cài đặt và cấu hình JDK.
+* Đã cài đặt Maven (hoặc bạn có thể dùng file thực thi `mvnw` đi kèm).
+* Chạy một Server MySQL trên máy tính cá nhân.
 
-### 1. Chuẩn bị Cơ Sở Dữ Liệu
-Hãy cài đặt **MySQL Server**.
-Phần thiết lập Database đã được cấu hình trong `src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/todo_db?useSSL=false
-spring.datasource.username=(your-username)
-spring.datasource.password=(your-password)
-```
-**Hãy chắc chắn tạo một Schema mới tên là `todo_db` trong MySQL của bạn.** Hibernate sẽ làm nhiệm vụ còn lại (tự động tạo bảng `users` và `todos`).
+## 🔧 Cài đặt & Thiết lập
 
-### 2. Thực thi lệnh Build và Chạy
-Sử dụng công cụ `mvnw` (Maven Wrapper) tích hợp sẵn trong thư mục dự án:
-Mở Terminal/PowerShell tại thư mục gốc:
+1. **Chuẩn bị Cơ sở dữ liệu**
+   Mở phần mềm quản lý MySQL của bạn và tạo một database mới với tên `todo_db`:
+   ```sql
+   CREATE DATABASE todo_db;
+   ```
 
-```powershell
-# Cho Windows
-.\mvnw.cmd clean compile
-.\mvnw.cmd spring-boot:run
+2. **Cấu hình Application Properties**
+   Mở file `src/main/resources/application.properties` và điều chỉnh lại thông tin đăng nhập MySQL cho đúng với máy của bạn:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/todo_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+   spring.datasource.username=root
+   spring.datasource.password=mật_khẩu_của_bạn
+   ```
 
-# Cho Linux / macOS
-./mvnw clean compile
-./mvnw spring-boot:run
-```
+3. **Khởi chạy Ứng dụng**
+   Mở terminal tại thư mục gốc của dự án và chạy lệnh sau (sử dụng Maven wrapper):
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+   *Server sẽ bắt đầu chạy ở thư mục mặc định `localhost:8080`. Hibernate sẽ tự động tạo các bảng `users` và `todos` trong MySQL giúp bạn, không cần chạy script SQL thủ công.*
 
-### 3. Trải nghiệm!
-Sau khi khởi động không báo lỗi, mở trình duyệt truy cập:
-👉 **[http://localhost:8080/](http://localhost:8080/)**
+## 📡 Danh sách API Endpoints
 
-- Hãy điền tài khoản để sign-up (Mật khẩu và Username phải dài trên 6 ký tự).
-- Chọn **Login** bằng thông tin mới đăng ký.
-- Quản lý Todo vô hạn thời gian của bạn!
+### Phân hệ Xác thực (`/api/auth`)
+| Phương thức | Endpoint | Mô tả | Dữ liệu Body quy định |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Đăng ký tài khoản mới | `{ "username": "admin", "password": "123", "email": "admin@test.com" }` |
+| `POST` | `/api/auth/login` | Đăng nhập và nhận chuỗi JWT Token | `{ "username": "admin", "password": "123" }` |
+| `POST` | `/api/auth/logout` | Vô hiệu hóa Session đang login bằng Cookie | Không yêu cầu |
 
-## 📜 Giấy phép
-Mã nguồn mở miễn phí học tập.
-Đã sử dụng Antigravity (Vibe Coding)
+### Phân hệ Công việc (`/api/todos`)
+> **Lưu ý:** Tất cả các endpoint dưới đây đều yêu cầu bạn phải đang đăng nhập trước đó (truyền lên `Bearer Token` hoặc gửi kèm Session Cookie hợp lệ).
+
+| Phương thức | Endpoint | Mô tả |
+| :--- | :--- | :--- |
+| `GET` | `/api/todos` | Lấy danh sách nhiệm vụ của người đang đăng nhập |
+| `POST` | `/api/todos` | Tạo mới một nhiệm vụ (Bắt buộc có `title`, tùy chọn `description`) |
+| `GET` | `/api/todos/{id}` | Lấy chi tiết một nhiệm vụ cụ thể |
+| `PUT` | `/api/todos/{id}` | Cập nhật lại một nhiệm vụ |
+| `DELETE` | `/api/todos/{id}` | Xóa một nhiệm vụ |
+
+## 🧪 Hướng dẫn thiết lập Test với Postman (Dùng JWT)
+
+1. Gửi request đăng ký tài khoản mới tại endpoint `/api/auth/register`.
+2. Đăng nhập tại `/api/auth/login` và copy dải ký tự `token` mà Server phản hồi về trong định dạng JSON.
+3. Để gọi bất kỳ API nào nằm trong nhánh `/api/todos`, bạn hãy sang tab **Authorization** (Ủy quyền) trong Postman, đổi Type sang **Bearer Token**, dán mã token vừa nãy vào và bấm Send. Mọi request lúc này sẽ được xác thực thành công.

@@ -1,209 +1,18 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: Todo Website API
+  title: Todo API
   version: 1.0.0
-  description: RESTful API for managing personal to-do tasks and user authentication.
+  description: API documentation for the Todo Spring Boot application.
 servers:
   - url: http://localhost:8080
-    description: Local development server
-
-paths:
-  /api/auth/signup:
-    post:
-      summary: Register a new user
-      tags:
-        - Authentication
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthRequest'
-      responses:
-        '200':
-          description: User registered successfully
-        '400':
-          description: Username is already taken or validation error
-
-  /api/auth/login:
-    post:
-      summary: Authenticate a user
-      tags:
-        - Authentication
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthRequest'
-      responses:
-        '200':
-          description: User logged in successfully (Set-Cookie header returns JSESSIONID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: User login successfully
-                  username:
-                    type: string
-                    example: johndoe
-        '401':
-          description: Invalid username or password
-
-  /api/auth/me:
-    get:
-      summary: Get the current authenticated user details
-      tags:
-        - Authentication
-      security:
-        - cookieAuth: []
-      responses:
-        '200':
-          description: Successfully retrieved user session info
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  username:
-                    type: string
-                    example: johndoe
-        '401':
-          description: Not authenticated
-
-  /api/auth/logout:
-    post:
-      summary: Logout the current user
-      tags:
-        - Authentication
-      security:
-        - cookieAuth: []
-      responses:
-        '200':
-          description: Logout successful
-
-  /api/todos:
-    get:
-      summary: Retrieve all to-do tasks for the current user
-      tags:
-        - Todos
-      security:
-        - cookieAuth: []
-      responses:
-        '200':
-          description: An array of tasks
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TodoResponse'
-        '401':
-          description: Unauthorized
-
-    post:
-      summary: Create a new to-do task
-      tags:
-        - Todos
-      security:
-        - cookieAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TodoCreateRequest'
-      responses:
-        '200':
-          description: Task created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TodoResponse'
-        '400':
-          description: Validation error
-
-  /api/todos/{id}:
-    get:
-      summary: Retrieve a single task by ID
-      tags:
-        - Todos
-      security:
-        - cookieAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Task retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TodoResponse'
-        '404':
-          description: Task not found or access denied
-
-    put:
-      summary: Update an existing task
-      tags:
-        - Todos
-      security:
-        - cookieAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TodoUpdateRequest'
-      responses:
-        '200':
-          description: Task updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TodoResponse'
-        '404':
-          description: Task not found or access denied
-
-    delete:
-      summary: Delete a task
-      tags:
-        - Todos
-      security:
-        - cookieAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: Task deleted successfully
-        '404':
-          description: Task not found or access denied
-
 components:
   securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: JSESSIONID
-
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
-    AuthRequest:
+    AuthRequestDto:
       type: object
       required:
         - username
@@ -211,55 +20,198 @@ components:
       properties:
         username:
           type: string
-          example: johndoe
-          minLength: 6
         password:
           type: string
-          example: secret123
-          minLength: 6
-
-    TodoCreateRequest:
+    AuthResponseDto:
+      type: object
+      properties:
+        token:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        message:
+          type: string
+    RegisterRequestDto:
+      type: object
+      required:
+        - username
+        - password
+        - email
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+          format: email
+    TodoRequestDto:
       type: object
       required:
         - title
       properties:
         title:
           type: string
-          example: Buy groceries
-          minLength: 3
         description:
           type: string
-          example: Milk, eggs, and bread
-
-    TodoUpdateRequest:
-      type: object
-      required:
-        - title
-        - completed
-      properties:
-        title:
-          type: string
-          example: Buy groceries
-          minLength: 3
-        description:
-          type: string
-          example: Milk, eggs, and bread
         completed:
           type: boolean
-          example: true
-
-    TodoResponse:
+    TodoResponseDto:
       type: object
       properties:
         id:
           type: integer
-          example: 1
+          format: int64
         title:
           type: string
-          example: Buy groceries
         description:
           type: string
-          example: Milk, eggs, and bread
         completed:
           type: boolean
-          example: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+security:
+  - BearerAuth: []
+paths:
+  /api/auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequestDto"
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponseDto"
+        "401":
+          description: Unauthorized
+  /api/auth/register:
+    post:
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequestDto"
+      responses:
+        "201":
+          description: User registered
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: Bad request
+  /api/auth/logout:
+    post:
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/todos:
+    post:
+      summary: Create a Todo
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoRequestDto"
+      responses:
+        "201":
+          description: Todo created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoResponseDto"
+        "401":
+          description: Unauthorized
+    get:
+      summary: Get all Todos for current user
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: List of Todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TodoResponseDto"
+        "401":
+          description: Unauthorized
+  /api/todos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get Todo by id
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Todo item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoResponseDto"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+    put:
+      summary: Update Todo
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoRequestDto"
+      responses:
+        "200":
+          description: Updated Todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoResponseDto"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+    delete:
+      summary: Delete Todo
+      security:
+        - BearerAuth: []
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized

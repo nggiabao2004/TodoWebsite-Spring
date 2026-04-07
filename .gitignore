@@ -1,6 +1,6 @@
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -32,20 +32,10 @@ build/
 ### VS Code ###
 .vscode/
 
-### OS generated files ###
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-### Log files ###
-*.log
-
-### Spring Boot ###
-application.properties
-application-*.properties
-application.yaml
-application-*.yaml
+### Sensitive Files & Secrets ###
+*.env
+.env
+.env.*
+*.properties
+*.yml
+*.yaml
