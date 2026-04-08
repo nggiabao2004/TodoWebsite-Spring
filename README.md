@@ -8,6 +8,7 @@ Một hệ thống RESTful API mạnh mẽ được xây dựng bằng Spring Bo
 * **Bảo mật kép (Hybrid Security)**: Hỗ trợ linh hoạt cả hai phương thức xác thực: Bearer Token (JWT) và Cookie (Session).
 * **Quản lý công việc (Todo Management)**: Nhóm chức năng CRUD hoàn chỉnh (Tạo, Đọc, Cập nhật, Xóa) cho các tác vụ Todo.
 * **Cách ly dữ liệu (Data Isolation)**: Mối quan hệ Một-Nhiều (One-to-Many) chặt chẽ giữa User và Todo đảm bảo người dùng chỉ được phép can thiệp vào dữ liệu của riêng mình.
+* **Kiến trúc Service Layer**: Phân tách rõ ràng giữa Controller và Business Logic thông qua Interface và Implementation (Service/ServiceImpl), giúp mã nguồn dễ bảo trì và mở rộng.
 * **Xử lý ngoại lệ tập trung (Centralized Exception Handling)**: Tích hợp sẵn Controller Advice giúp định dạng và trả về các thông báo lỗi (Lỗi Validation, 404 Không tìm thấy...) một cách chuẩn mực dưới định dạng JSON.
 
 ## 🛠️ Công nghệ sử dụng
@@ -15,7 +16,7 @@ Một hệ thống RESTful API mạnh mẽ được xây dựng bằng Spring Bo
 * **Java** (v25)
 * **Spring Boot** (Starter Web, Data JPA, Security, Validation)
 * **Cơ sở dữ liệu MySQL**
-* **JSON Web Token (jjwt)**
+* **JSON Web Token (jwt)**
 * **Lombok**
 * **Maven**
 
@@ -73,3 +74,9 @@ Một hệ thống RESTful API mạnh mẽ được xây dựng bằng Spring Bo
 1. Gửi request đăng ký tài khoản mới tại endpoint `/api/auth/register`.
 2. Đăng nhập tại `/api/auth/login` và copy dải ký tự `token` mà Server phản hồi về trong định dạng JSON.
 3. Để gọi bất kỳ API nào nằm trong nhánh `/api/todos`, bạn hãy sang tab **Authorization** (Ủy quyền) trong Postman, đổi Type sang **Bearer Token**, dán mã token vừa nãy vào và bấm Send. Mọi request lúc này sẽ được xác thực thành công.
+
+## 📖 Tài liệu API (Swagger)
+
+Dự án có sẵn file cấu hình API theo chuẩn OpenAPI 3.0 tại file `swagger.yaml`. Bạn có thể:
+* Sử dụng [Swagger Editor](https://editor.swagger.io/) và dán nội dung file `swagger.yaml` vào để xem tài liệu trực quan.
+* Tích hợp các thư viện như `springdoc-openapi` để tự động tạo giao diện UI từ file này.
